@@ -2,10 +2,14 @@
 @using System.Globalization
 @inject CatalogSettings catalogSettings
 
-<div style="margin-top:10px">
-    <button type="button" id="bid-button-@Model.Id" class="btn btn-success add-to-cart-button" data-productid="@Model.Id" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;">
-        <span class="fa fa-shopping-cart"></span> <span>@T("ShoppingCart.Bid")</span>
-    </button>
+<div style="margin-bottom:-10px">
+    <div class="form-group">
+        <input asp-for="HighestBid" class="form-control qty-input text-center" />
+
+        <button type="button" id="bid-button-@Model.Id" class="btn btn-success add-to-cart-button" data-productid="@Model.Id" onclick="AjaxCart.addbid('@Url.RouteUrl("AddBid", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;">
+            <span class="fa fa-shopping-cart"></span> <span>@T("ShoppingCart.Bid")</span>
+        </button>
+    </div>
 </div>
 
 <script>

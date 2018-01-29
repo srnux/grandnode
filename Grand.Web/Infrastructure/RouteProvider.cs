@@ -151,8 +151,14 @@ namespace Grand.Web.Infrastructure
                             new[] { "Grand.Web.Controllers" });
             //add product to cart (with attributes and options). used on the product details pages.
             routeBuilder.MapLocalizedRoute("AddProductToCart-Details",
-                            "addproducttocart/details/{productId}/{shoppingCartTypeId}",
-                            new { controller = "ShoppingCart", action = "AddProductToCart_Details" },
+                "addproducttocart/details/{productId}/{shoppingCartTypeId}",
+                new { controller = "ShoppingCart", action = "AddProductToCart_Details" },
+                new { productId = @"\w+", shoppingCartTypeId = @"\d+" },
+                new[] { "Grand.Web.Controllers" });
+
+            routeBuilder.MapLocalizedRoute("AddBid",
+                            "addbid/AddBid/{productId}/{shoppingCartTypeId}",
+                            new { controller = "ShoppingCart", action = "AddBid" },
                             new { productId = @"\w+", shoppingCartTypeId = @"\d+" },
                             new[] { "Grand.Web.Controllers" });
 

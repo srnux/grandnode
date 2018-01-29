@@ -54,7 +54,7 @@
         {<text>product-price</text>}
         else
         {<text>non-discounted-price</text>}">
-            @if (!String.IsNullOrWhiteSpace(Model.OldPrice) || !String.IsNullOrWhiteSpace(Model.PriceWithDiscount))
+            @if ((!String.IsNullOrWhiteSpace(Model.OldPrice) || !String.IsNullOrWhiteSpace(Model.PriceWithDiscount)) && Model.IsAuction)
             {
                 @*display "Price:" label if we have old price or discounted one*@
                 <label>@T("Products.Price"):</label>

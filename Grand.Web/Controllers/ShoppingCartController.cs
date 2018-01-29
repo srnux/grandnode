@@ -39,7 +39,7 @@ namespace Grand.Web.Controllers
 {
     public partial class ShoppingCartController : BasePublicController
     {
-		#region Fields
+        #region Fields
 
         private readonly IProductService _productService;
         private readonly IWorkContext _workContext;
@@ -66,6 +66,7 @@ namespace Grand.Web.Controllers
         private readonly IAddressWebService _addressWebService;
         private readonly IShoppingCartWebService _shoppingCartWebService;
         private readonly IProductReservationService _productReservationService;
+        private readonly IAuctionService _auctionService;
         private readonly MediaSettings _mediaSettings;
         private readonly ShoppingCartSettings _shoppingCartSettings;
         private readonly CatalogSettings _catalogSettings;
@@ -80,37 +81,38 @@ namespace Grand.Web.Controllers
 
         #region Constructors
 
-        public ShoppingCartController(IProductService productService, 
+        public ShoppingCartController(IProductService productService,
             IStoreContext storeContext,
             IWorkContext workContext,
-            IShoppingCartService shoppingCartService, 
-            ILocalizationService localizationService, 
+            IShoppingCartService shoppingCartService,
+            ILocalizationService localizationService,
             IProductAttributeParser productAttributeParser,
-            ITaxService taxService, ICurrencyService currencyService, 
+            ITaxService taxService, ICurrencyService currencyService,
             IPriceCalculationService priceCalculationService,
             IPriceFormatter priceFormatter,
             ICheckoutAttributeParser checkoutAttributeParser,
-            ICheckoutAttributeFormatter checkoutAttributeFormatter, 
+            ICheckoutAttributeFormatter checkoutAttributeFormatter,
             IDiscountService discountService,
-            ICustomerService customerService, 
+            ICustomerService customerService,
             IGiftCardService giftCardService,
             IOrderTotalCalculationService orderTotalCalculationService,
-            ICheckoutAttributeService checkoutAttributeService, 
-            IPermissionService permissionService, 
+            ICheckoutAttributeService checkoutAttributeService,
+            IPermissionService permissionService,
             IDownloadService downloadService,
-            IWebHelper webHelper, 
+            IWebHelper webHelper,
             ICustomerActivityService customerActivityService,
             IGenericAttributeService genericAttributeService,
             IAddressWebService addressWebService,
             IShoppingCartWebService shoppingCartWebService,
             IProductReservationService productReservationService,
+            IAuctionService auctionService,
             MediaSettings mediaSettings,
             ShoppingCartSettings shoppingCartSettings,
-            CatalogSettings catalogSettings, 
+            CatalogSettings catalogSettings,
             OrderSettings orderSettings,
-            ShippingSettings shippingSettings, 
+            ShippingSettings shippingSettings,
             TaxSettings taxSettings,
-            CaptchaSettings captchaSettings, 
+            CaptchaSettings captchaSettings,
             AddressSettings addressSettings,
             RewardPointsSettings rewardPointsSettings
             )
@@ -149,12 +151,13 @@ namespace Grand.Web.Controllers
             this._captchaSettings = captchaSettings;
             this._addressSettings = addressSettings;
             this._rewardPointsSettings = rewardPointsSettings;
+            this._auctionService = auctionService;
         }
 
         #endregion
 
         #region Shopping cart
-        
+
         //add product to cart using AJAX
         //currently we use this method on catalog pages (category/manufacturer/etc)
         [HttpPost]
@@ -200,7 +203,7 @@ namespace Grand.Web.Controllers
                     redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
                 });
             }
-            
+
 
             var allowedQuantities = product.ParseAllowedQuantities();
             if (allowedQuantities.Length > 0)
@@ -234,7 +237,7 @@ namespace Grand.Web.Controllers
             var quantityToValidate = shoppingCartItem != null ? shoppingCartItem.Quantity + quantity : quantity;
             var addToCartWarnings = _shoppingCartService
                 .GetShoppingCartItemWarnings(customer, cartType,
-                product, _storeContext.CurrentStore.Id, string.Empty, 
+                product, _storeContext.CurrentStore.Id, string.Empty,
                 decimal.Zero, null, null, quantityToValidate, false, true, false, false, false);
             if (addToCartWarnings.Any())
             {
@@ -281,13 +284,13 @@ namespace Grand.Web.Controllers
                                 redirect = Url.RouteUrl("Wishlist"),
                             });
                         }
-                        
+
                         //display notification message and update appropriate blocks
                         var updatetopwishlistsectionhtml = string.Format(_localizationService.GetResource("Wishlist.HeaderQuantity"),
                         customer.ShoppingCartItems
                         .Where(sci => sci.ShoppingCartType == ShoppingCartType.Wishlist)
                         .LimitPerStore(_storeContext.CurrentStore.Id)
-                        .Sum(x=>x.Quantity));
+                        .Sum(x => x.Quantity));
 
                         return Json(new
                         {
@@ -311,14 +314,14 @@ namespace Grand.Web.Controllers
                                 redirect = Url.RouteUrl("ShoppingCart"),
                             });
                         }
-                        
+
                         //display notification message and update appropriate blocks
                         var updatetopcartsectionhtml = string.Format(_localizationService.GetResource("ShoppingCart.HeaderQuantity"),
                         customer.ShoppingCartItems
                         .Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart)
                         .LimitPerStore(_storeContext.CurrentStore.Id)
                         .Sum(x => x.Quantity));
-                        
+
                         var updateflyoutcartsectionhtml = _shoppingCartSettings.MiniShoppingCartEnabled
                             ? this.RenderViewComponentToString("FlyoutShoppingCart")
                             : "";
@@ -428,7 +431,7 @@ namespace Grand.Web.Controllers
 
             //product and gift card attributes
             string attributes = _shoppingCartWebService.ParseProductAttributes(product, form);
-            
+
             //rental attributes
             DateTime? rentalStartDate = null;
             DateTime? rentalEndDate = null;
@@ -515,7 +518,7 @@ namespace Grand.Web.Controllers
                         updatecartitem.ShoppingCartType;
 
             //save item
-            var addToCartWarnings = new List<string>();            
+            var addToCartWarnings = new List<string>();
             if (updatecartitem == null)
             {
                 //add to the cart
@@ -581,14 +584,14 @@ namespace Grand.Web.Controllers
                                 redirect = Url.RouteUrl("Wishlist"),
                             });
                         }
-                        
+
                         //display notification message and update appropriate blocks
                         var updatetopwishlistsectionhtml = string.Format(_localizationService.GetResource("Wishlist.HeaderQuantity"),
                         _workContext.CurrentCustomer.ShoppingCartItems
                         .Where(sci => sci.ShoppingCartType == ShoppingCartType.Wishlist)
                         .LimitPerStore(_storeContext.CurrentStore.Id)
                         .Sum(x => x.Quantity));
-                        
+
                         return Json(new
                         {
                             success = true,
@@ -611,7 +614,7 @@ namespace Grand.Web.Controllers
                                 redirect = Url.RouteUrl("ShoppingCart"),
                             });
                         }
-                        
+
                         //display notification message and update appropriate blocks
                         var updatetopcartsectionhtml = string.Format(_localizationService.GetResource("ShoppingCart.HeaderQuantity"),
                         _workContext.CurrentCustomer.ShoppingCartItems
@@ -637,6 +640,48 @@ namespace Grand.Web.Controllers
 
 
             #endregion
+        }
+
+        [HttpPost]
+        public virtual IActionResult AddBid(string productId, int shoppingCartTypeId, IFormCollection form)
+        {
+            decimal bid = 0;
+            foreach (string formKey in form.Keys)
+            {
+                if (formKey.Equals(string.Format("auction_{0}.HighestBid", productId), StringComparison.OrdinalIgnoreCase))
+                {
+                    decimal.TryParse(form[formKey], out bid);
+                    break;
+                }
+            }
+
+            Product product = _productService.GetProductById(productId);
+
+            if (bid <= product.HighestBid)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = _localizationService.GetResource("ShoppingCart.BidMustBeHigher")
+                });
+            }
+
+            _auctionService.InsertBid(new Bid
+            {
+                Date = DateTime.UtcNow,
+                Amount = bid,
+                CustomerId = _workContext.CurrentCustomer.Id,
+                ProductId = productId
+            });
+
+            product.HighestBid = bid;
+            _productService.UpdateHighestBid(product, bid);
+
+            return Json(new
+            {
+                success = true,
+                message = _localizationService.GetResource("ShoppingCart.Yourbidhasbeenplaced")
+            });
         }
 
         //handle product attribute selection event. this way we return new price, overridden gtin/sku/mpn
@@ -749,7 +794,7 @@ namespace Grand.Web.Controllers
         public virtual IActionResult UploadFileProductAttribute(string attributeId, string productId)
         {
             var product = _productService.GetProductById(productId);
-            var attribute = product.ProductAttributeMappings.Where(x => x.Id == attributeId).FirstOrDefault(); 
+            var attribute = product.ProductAttributeMappings.Where(x => x.Id == attributeId).FirstOrDefault();
             if (attribute == null || attribute.AttributeControlType != AttributeControlType.FileUpload)
             {
                 return Json(new
@@ -935,7 +980,7 @@ namespace Grand.Web.Controllers
                 .LimitPerStore(_storeContext.CurrentStore.Id)
                 .ToList();
 
-            var allIdsToRemove = !string.IsNullOrEmpty(form["removefromcart"].ToString()) ? form["removefromcart"].ToString().Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x).ToList() : new List<string>();
+            var allIdsToRemove = !string.IsNullOrEmpty(form["removefromcart"].ToString()) ? form["removefromcart"].ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x).ToList() : new List<string>();
 
             //current warnings <cart item identifier, warnings>
             var innerWarnings = new Dictionary<string, IList<string>>();
@@ -1024,7 +1069,7 @@ namespace Grand.Web.Controllers
                 return RedirectToRoute("HomePage");
             }
         }
-        
+
         [HttpPost, ActionName("Cart")]
         [FormValueRequired("checkout")]
         public virtual IActionResult StartCheckout(IFormCollection form)
@@ -1054,9 +1099,9 @@ namespace Grand.Web.Controllers
                 if (!_orderSettings.AnonymousCheckoutAllowed)
                     return Challenge();
 
-                return RedirectToRoute("LoginCheckoutAsGuest", new {returnUrl = Url.RouteUrl("ShoppingCart")});
+                return RedirectToRoute("LoginCheckoutAsGuest", new { returnUrl = Url.RouteUrl("ShoppingCart") });
             }
-            
+
             return RedirectToRoute("Checkout");
         }
 
@@ -1071,7 +1116,7 @@ namespace Grand.Web.Controllers
 
             //parse and save checkout attributes
             _shoppingCartWebService.ParseAndSaveCheckoutAttributes(cart, form);
-            
+
             var model = new ShoppingCartModel();
             if (!String.IsNullOrWhiteSpace(discountcouponcode))
             {
@@ -1161,7 +1206,7 @@ namespace Grand.Web.Controllers
 
             //parse and save checkout attributes
             _shoppingCartWebService.ParseAndSaveCheckoutAttributes(cart, form);
-            
+
             var model = new ShoppingCartModel();
             if (!cart.IsRecurring())
             {
@@ -1217,7 +1262,7 @@ namespace Grand.Web.Controllers
         [HttpPost, ActionName("Cart")]
         [FormValueRequired(FormValueRequirement.StartsWith, "removediscount-")]
         public virtual IActionResult RemoveDiscountCoupon(IFormCollection form)
-        {          
+        {
             var model = new ShoppingCartModel();
             string discountId = string.Empty;
             foreach (var formValue in form.Keys)
@@ -1231,7 +1276,7 @@ namespace Grand.Web.Controllers
                 foreach (var item in coupons)
                 {
                     var dd = _discountService.GetDiscountByCouponCode(item);
-                    if(dd.Id == discount.Id)
+                    if (dd.Id == discount.Id)
                         _workContext.CurrentCustomer.RemoveDiscountCouponCode(item);
                 }
             }
@@ -1279,7 +1324,7 @@ namespace Grand.Web.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.EnableWishlist))
                 return RedirectToRoute("HomePage");
 
-            Customer customer = customerGuid.HasValue ? 
+            Customer customer = customerGuid.HasValue ?
                 _customerService.GetCustomerByGuid(customerGuid.Value)
                 : _workContext.CurrentCustomer;
             if (customer == null)
@@ -1307,10 +1352,10 @@ namespace Grand.Web.Controllers
                 .LimitPerStore(_storeContext.CurrentStore.Id)
                 .ToList();
 
-            var allIdsToRemove = !string.IsNullOrEmpty(form["removefromcart"].ToString()) 
-                ? form["removefromcart"].ToString().Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x=>x)
-                .ToList() 
+            var allIdsToRemove = !string.IsNullOrEmpty(form["removefromcart"].ToString())
+                ? form["removefromcart"].ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x)
+                .ToList()
                 : new List<string>();
 
             //current warnings <cart item identifier, warnings>
@@ -1362,7 +1407,7 @@ namespace Grand.Web.Controllers
             }
             return View(model);
         }
-       
+
         [HttpPost, ActionName("Wishlist")]
         [FormValueRequired("addtocartbutton")]
         public virtual IActionResult AddItemsToCartFromWishlist(Guid? customerGuid, IFormCollection form)
@@ -1386,9 +1431,9 @@ namespace Grand.Web.Controllers
 
             var allWarnings = new List<string>();
             var numberOfAddedItems = 0;
-            var allIdsToAdd = form.ContainsKey("addtocart") ? form["addtocart"].ToString().Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x=>x)
-                .ToList() 
+            var allIdsToAdd = form.ContainsKey("addtocart") ? form["addtocart"].ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x)
+                .ToList()
                 : new List<string>();
             foreach (var sci in pageCart)
             {
