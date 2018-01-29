@@ -27,7 +27,7 @@
     {
 
 
-    if (Model.AllowedQuantities.Count > 0)
+        if (Model.AllowedQuantities.Count > 0)
         {
             <select asp-for="EnteredQuantity" asp-items="Model.AllowedQuantities" class="col-2 custom-select form-control qty-dropdown"></select>
         }
@@ -44,28 +44,32 @@
                 </span>
             }
 
-    }
-{
-    var addToCartText = "";
-    if (!String.IsNullOrEmpty(Model.UpdatedShoppingCartItemId) && Model.UpdateShoppingCartItemType.HasValue && Model.UpdateShoppingCartItemType.Value == ShoppingCartType.ShoppingCart)
-    {
-        addToCartText = T("ShoppingCart.AddToCart.Update").Text;
-    }
-    else
-    {
-        addToCartText = T("ShoppingCart.AddToCart").Text;
-        if (Model.IsReservation)
-        {
-            addToCartText = T("ShoppingCart.Reservation").Text;
         }
-        if (Model.AvailableForPreOrder)
         {
-            addToCartText = T("ShoppingCart.PreOrder").Text;
-        }
-    }
+            var addToCartText = "";
+            if (!String.IsNullOrEmpty(Model.UpdatedShoppingCartItemId) && Model.UpdateShoppingCartItemType.HasValue && Model.UpdateShoppingCartItemType.Value == ShoppingCartType.ShoppingCart)
+            {
+                addToCartText = T("ShoppingCart.AddToCart.Update").Text;
+            }
+            else
+            {
+                addToCartText = T("ShoppingCart.AddToCart").Text;
+                if (Model.IsReservation)
+                {
+                    addToCartText = T("ShoppingCart.Reservation").Text;
+                }
+                if (Model.AvailableForPreOrder)
+                {
+                    addToCartText = T("ShoppingCart.PreOrder").Text;
+                }
+                if (Model.IsAuction)
+                {
+                    addToCartText = T("ShoppingCart.BuyNow").Text;
+                }
+            }
 
-    //when a customer clicks 'Enter' button we submit the "add to cart" button (if visible)
-    <script type="text/javascript">
+            //when a customer clicks 'Enter' button we submit the "add to cart" button (if visible)
+            <script type="text/javascript">
         $(document).ready(function () {
             $("#@Html.IdFor(model => model.EnteredQuantity)").keydown(function (event) {
                 if (event.keyCode == 13) {
@@ -74,14 +78,13 @@
                 }
             });
         });
-    </script>
-    <button type="button" id="add-to-cart-button-@Model.ProductId" class="btn btn-success add-to-cart-button" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;">
-        <span class="fa fa-shopping-cart"></span> <span>@addToCartText</span>
-    </button>
+            </script>
+            <button type="button" id="add-to-cart-button-@Model.ProductId" class="btn btn-success add-to-cart-button" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new { productId = Model.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;">
+                <span class="fa fa-shopping-cart"></span> <span>@addToCartText</span>
+            </button>
         }
 
     }
 
     @await Component.InvokeAsync("Widget", new { widgetZone = "productdetails_add_info" })
-
 }

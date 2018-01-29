@@ -857,6 +857,14 @@ namespace Grand.Web.Services
                             var priceStr = _priceFormatter.FormatPrice(finalPriceWithDiscount);
                             model.ProductPrice.ReservationPrice = _priceFormatter.FormatReservationProductPeriod(product, priceStr);
                         }
+
+                        if(product.ProductType == ProductType.Auction)
+                        {
+                            model.ProductPrice.IsAuction = true;
+                            model.ProductPrice.HighestBid = _priceFormatter.FormatPrice(product.HighestBid);
+                            model.ProductPrice.HighestBidValue = product.HighestBid;
+                            model.ProductPrice.DisableBuyButton = product.DisableBuyButton;
+                        }
                     }
                 }
             }
@@ -1327,6 +1335,12 @@ namespace Grand.Web.Services
                 }
 
             }
+            #endregion
+
+            #region Auctions
+            model.StartPrice = product.StartPrice;
+            model.HighestBid = product.HighestBid;
+            model.AddToCart.IsAuction = true;
             #endregion
 
             return model;

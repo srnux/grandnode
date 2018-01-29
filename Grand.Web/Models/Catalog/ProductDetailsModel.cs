@@ -107,6 +107,9 @@ namespace Grand.Web.Models.Catalog
         public bool DisplayDiscontinuedMessage { get; set; }
         public string CurrentStoreName { get; set; }
 
+        public decimal StartPrice { get; set; }
+        public decimal HighestBid { get; set; }
+
         #region Nested Classes
 
         public partial class ProductBreadcrumbModel : BaseGrandModel
@@ -146,9 +149,12 @@ namespace Grand.Web.Models.Catalog
 
             public bool DisableBuyButton { get; set; }
             public bool DisableWishlistButton { get; set; }
-            
+
             //reservation
             public bool IsReservation { get; set; }
+
+            //auction
+            public bool IsAuction { get; set; }
 
             public string MeasureUnit { get; set; }
             //pre-order
@@ -185,6 +191,12 @@ namespace Grand.Web.Models.Catalog
             //Reservation
             public bool IsReservation { get; set; }
             public string ReservationPrice { get; set; }
+
+            //Auction
+            public bool IsAuction { get; set; }
+            public string HighestBid { get; set; }
+            public decimal HighestBidValue { get; set; }
+            public bool DisableBuyButton { get; set; }
 
             /// <summary>
             /// A value indicating whether we should display tax/shipping info (used in Germany)

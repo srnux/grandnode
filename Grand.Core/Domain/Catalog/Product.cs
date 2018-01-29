@@ -536,6 +536,21 @@ namespace Grand.Core.Domain.Catalog
         public IList<LocalizedProperty> Locales { get; set; }
 
         /// <summary>
+        /// Gets or sets auction start price
+        /// </summary>
+        public decimal StartPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets current highest bid
+        /// </summary>
+        public decimal HighestBid { get; set; }
+
+        /// <summary>
+        /// Gets or sets current highest bidder customer id
+        /// </summary>
+        public string HighestBidder { get; set; }
+
+        /// <summary>
         /// Gets or sets the product type
         /// </summary>
         public ProductType ProductType
