@@ -108,7 +108,9 @@ namespace Grand.Web.Models.Catalog
         public string CurrentStoreName { get; set; }
 
         public decimal StartPrice { get; set; }
-        public decimal HighestBid { get; set; }
+        public decimal HighestBidValue { get; set; }
+        public DateTime? EndTime { get; set; }
+
 
         #region Nested Classes
 

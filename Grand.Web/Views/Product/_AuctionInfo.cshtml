@@ -4,9 +4,20 @@
 
 <div style="margin-bottom:-10px">
     <div class="form-group">
-        <input asp-for="HighestBid" class="form-control qty-input text-center" />
+        @if (Model.EndTime.HasValue)
+        {
+            <div>
+                @if((Model.EndTime - DateTime.UtcNow).Value.Days < 1) {
+                    <label>@T("AddToCart.Timeleft"): @((Model.EndTime - DateTime.UtcNow).Value.ToString(@"hh\:mm\:ss"))</label>
+                } else {
+                    <label>@T("ShoppingCart.Auctionends"): @Model.EndTime</label>
+                }
+            </div>
+        }
 
-        <button type="button" id="bid-button-@Model.Id" class="btn btn-success add-to-cart-button" data-productid="@Model.Id" onclick="AjaxCart.addbid('@Url.RouteUrl("AddBid", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })', '#product-details-form');return false;">
+        <input asp-for="HighestBidValue" class="form-control qty-input text-center" value="@(Model.HighestBidValue + 1)" />
+
+        <button type="button" id="bid-button-@Model.Id" class="btn btn-success add-to-cart-button" data-productid="@Model.Id" onclick="AjaxCart.addbid('@Url.RouteUrl("AddBid", new { productId = Model.Id, shoppingCartTypeId = (int)ShoppingCartType.Auctions })', '#product-details-form');return false;">
             <span class="fa fa-shopping-cart"></span> <span>@T("ShoppingCart.Bid")</span>
         </button>
     </div>

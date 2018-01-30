@@ -549,7 +549,8 @@ namespace Grand.Services.Catalog
         /// </summary>
         /// <param name="product"></param>
         /// <param name="bid"></param>
-        void UpdateHighestBid(Product product, decimal bid);
+        /// <param name="bidder"></param>
+        void UpdateHighestBid(Product product, decimal bid, string bidder);
         #endregion
     }
 }

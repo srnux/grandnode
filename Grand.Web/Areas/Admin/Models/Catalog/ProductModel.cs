@@ -809,6 +809,15 @@ namespace Grand.Web.Areas.Admin.Models.Catalog
             public string Duration { get; set; }
         }
 
+        public partial class BidModel : BaseGrandEntityModel
+        {
+            public string BidId { get; set; }
+            public DateTime Date { get; set; }
+            public string CustomerId { get; set; }
+            public string Amount { get; set; }
+            public string OrderId { get; set; }
+        }
+
         [Validator(typeof(GenerateCalendarValidator))]
         public partial class GenerateCalendarModel : BaseGrandModel
         {

@@ -645,10 +645,20 @@ namespace Grand.Web.Controllers
         [HttpPost]
         public virtual IActionResult AddBid(string productId, int shoppingCartTypeId, IFormCollection form)
         {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = _localizationService.GetResource("ShoppingCart.Mustberegisteredtobid")
+                });
+            }
+
+
             decimal bid = 0;
             foreach (string formKey in form.Keys)
             {
-                if (formKey.Equals(string.Format("auction_{0}.HighestBid", productId), StringComparison.OrdinalIgnoreCase))
+                if (formKey.Equals(string.Format("auction_{0}.HighestBidValue", productId), StringComparison.OrdinalIgnoreCase))
                 {
                     decimal.TryParse(form[formKey], out bid);
                     break;
@@ -656,6 +666,24 @@ namespace Grand.Web.Controllers
             }
 
             Product product = _productService.GetProductById(productId);
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            var warnings = _shoppingCartService.GetStandardWarnings(_workContext.CurrentCustomer, ShoppingCartType.Auctions, product, "", 0, 1);
+            if (warnings.Any())
+            {
+                string toReturn = "";
+                foreach(var warning in warnings)
+                {
+                    toReturn += warning + "</br>";
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    message = toReturn
+                });
+            }
 
             if (bid <= product.HighestBid)
             {
@@ -675,12 +703,14 @@ namespace Grand.Web.Controllers
             });
 
             product.HighestBid = bid;
-            _productService.UpdateHighestBid(product, bid);
+            _productService.UpdateHighestBid(product, bid, _workContext.CurrentCustomer.Id);
+            var addtoCartModel = _shoppingCartWebService.PrepareAddToCartModel(product, _workContext.CurrentCustomer, 1, "", ShoppingCartType.Auctions, null, null, "", "", "");
 
             return Json(new
             {
                 success = true,
-                message = _localizationService.GetResource("ShoppingCart.Yourbidhasbeenplaced")
+                message = _localizationService.GetResource("ShoppingCart.Yourbidhasbeenplaced"),
+                html = this.RenderPartialViewToString("AddToCart", addtoCartModel)
             });
         }
 

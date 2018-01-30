@@ -1339,8 +1339,9 @@ namespace Grand.Web.Services
 
             #region Auctions
             model.StartPrice = product.StartPrice;
-            model.HighestBid = product.HighestBid;
+            model.HighestBidValue = product.HighestBid;
             model.AddToCart.IsAuction = true;
+            model.EndTime = product.AvailableEndDateTimeUtc;
             #endregion
 
             return model;

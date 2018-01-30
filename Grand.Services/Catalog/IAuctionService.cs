@@ -33,7 +33,14 @@ namespace Grand.Services.Catalog
         /// </summary>
         /// <param name="productId">Product Id</param>
         /// <returns>Bids</returns>
-        IPagedList<Bid> GetProductReservationsByProductId(string productId, int pageIndex = 0, int pageSize = int.MaxValue);
+        IPagedList<Bid> GetBidsByProductId(string productId, int pageIndex = 0, int pageSize = int.MaxValue);
+
+        /// <summary>
+        /// Gets bids for Customer Id
+        /// </summary>
+        /// <param name="customerId">Customer Id</param>
+        /// <returns>Bids</returns>
+        IPagedList<Bid> GetBidsByCustomerId(string customerId, int pageIndex = 0, int pageSize = int.MaxValue);
 
         /// <summary>
         /// Gets bid for specified Id

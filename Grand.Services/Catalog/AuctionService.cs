@@ -16,13 +16,16 @@ namespace Grand.Services.Catalog
     {
         private readonly IRepository<Bid> _bidRepository;
         private readonly IEventPublisher _eventPublisher;
+        private readonly IProductService _productService;
 
 
         public AuctionService(IRepository<Bid> bidRepository,
-            IEventPublisher eventPublisher)
+            IEventPublisher eventPublisher,
+            IProductService productService)
         {
             _bidRepository = bidRepository;
             _eventPublisher = eventPublisher;
+            _productService = productService;
         }
 
         public void DeleteBid(Bid bid)
@@ -32,6 +35,13 @@ namespace Grand.Services.Catalog
 
             _bidRepository.Delete(bid);
             _eventPublisher.EntityDeleted(bid);
+
+            var productToUpdate = _productService.GetProductById(bid.ProductId);
+            var highestBid = GetBidsByProductId(bid.ProductId).OrderByDescending(x => x.Amount).FirstOrDefault();
+            if (productToUpdate != null && highestBid != null)
+            {
+                _productService.UpdateHighestBid(productToUpdate, highestBid.Amount, highestBid.CustomerId);
+            }
         }
 
         public Bid GetBid(string Id)
@@ -39,9 +49,15 @@ namespace Grand.Services.Catalog
             return _bidRepository.GetById(Id);
         }
 
-        public IPagedList<Bid> GetProductReservationsByProductId(string productId, int pageIndex = 0, int pageSize = int.MaxValue)
+        public IPagedList<Bid> GetBidsByProductId(string productId, int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            var query = _bidRepository.Table.Where(x => x.ProductId == productId);
+            var query = _bidRepository.Table.Where(x => x.ProductId == productId).OrderByDescending(x => x.Date);
+            return new PagedList<Bid>(query, pageIndex, pageSize);
+        }
+
+        public IPagedList<Bid> GetBidsByCustomerId(string customerId, int pageIndex = 0, int pageSize = int.MaxValue)
+        {
+            var query = _bidRepository.Table.Where(x => x.CustomerId == customerId);
             return new PagedList<Bid>(query, pageIndex, pageSize);
         }
 

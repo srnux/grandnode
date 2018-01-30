@@ -80,6 +80,9 @@
                 @T("Admin.Catalog.Products.Reviews")
             </li>
         }
+        <li @Html.RenderSelectedTabIndex(18, GetSelectedTabIndex()) id="tab-bids">
+            @T("Admin.Catalog.Products.Bids")
+        </li>
         
 
     </ul>
@@ -142,6 +145,9 @@
             @Html.Partial("_CreateOrUpdate.Reviews", Model)
         </div>
     }
+    <div>
+        @Html.Partial("_CreateOrUpdate.Bids", Model)
+    </div>
 </div>
 
 @{
