@@ -541,6 +541,11 @@ namespace Grand.Core.Domain.Catalog
         public decimal StartPrice { get; set; }
 
         /// <summary>
+        /// Gets or sets auction ended
+        /// </summary>
+        public bool AuctionEnded { get; set; }
+
+        /// <summary>
         /// Gets or sets current highest bid
         /// </summary>
         public decimal HighestBid { get; set; }

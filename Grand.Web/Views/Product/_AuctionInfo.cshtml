@@ -7,10 +7,16 @@
         @if (Model.EndTime.HasValue)
         {
             <div>
-                @if((Model.EndTime - DateTime.UtcNow).Value.Days < 1) {
-                    <label>@T("AddToCart.Timeleft"): @((Model.EndTime - DateTime.UtcNow).Value.ToString(@"hh\:mm\:ss"))</label>
-                } else {
-                    <label>@T("ShoppingCart.Auctionends"): @Model.EndTime</label>
+                @if (Model.EndTime > DateTime.UtcNow)
+                {
+                    @if ((Model.EndTime - DateTime.UtcNow).Value.Days < 1)
+                    {
+                        <label>@T("AddToCart.Timeleft"): @((Model.EndTime - DateTime.UtcNow).Value.ToString(@"hh\:mm\:ss"))</label>
+                    }
+                    else
+                    {
+                        <label>@T("ShoppingCart.Auctionends"): @Model.EndTime</label>
+                    }
                 }
             </div>
         }

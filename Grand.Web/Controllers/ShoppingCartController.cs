@@ -699,11 +699,12 @@ namespace Grand.Web.Controllers
                 Date = DateTime.UtcNow,
                 Amount = bid,
                 CustomerId = _workContext.CurrentCustomer.Id,
-                ProductId = productId
+                ProductId = productId,
+                StoreId = _storeContext.CurrentStore.Id
             });
 
             product.HighestBid = bid;
-            _productService.UpdateHighestBid(product, bid, _workContext.CurrentCustomer.Id);
+            _auctionService.UpdateHighestBid(product, bid, _workContext.CurrentCustomer.Id);
             var addtoCartModel = _shoppingCartWebService.PrepareAddToCartModel(product, _workContext.CurrentCustomer, 1, "", ShoppingCartType.Auctions, null, null, "", "", "");
 
             return Json(new

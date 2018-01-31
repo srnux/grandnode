@@ -333,7 +333,8 @@ namespace Grand.Framework.Infrastructure
             builder.RegisterType<DeleteGuestsScheduleTask>().InstancePerLifetimeScope();
             builder.RegisterType<UpdateExchangeRateScheduleTask>().InstancePerLifetimeScope();
             builder.RegisterType<KeepAliveScheduleTask>().InstancePerLifetimeScope();
-            
+            builder.RegisterType<EndAuctionsTask>().InstancePerLifetimeScope();
+
         }
 
         /// <summary>

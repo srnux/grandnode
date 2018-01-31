@@ -46,7 +46,7 @@ namespace Grand.Services.Messages
         /// <param name="languageId">Message language identifier</param>
         /// <returns>Queued email identifier</returns>
         int SendCustomerPasswordRecoveryMessage(Customer customer, string languageId);
-        
+
         #endregion
 
         #region Order workflow
@@ -131,7 +131,7 @@ namespace Grand.Services.Messages
         /// <param name="attachmentFilePath">Attachment file path</param>
         /// <param name="attachmentFileName">Attachment file name. If specified, then this file name will be sent to a recipient. Otherwise, "AttachmentFilePath" name will be used.</param>
         /// <returns>Queued email identifier</returns>
-        int SendOrderCompletedCustomerNotification(Order order, string languageId, 
+        int SendOrderCompletedCustomerNotification(Order order, string languageId,
             string attachmentFilePath = null, string attachmentFileName = null);
 
         /// <summary>
@@ -183,7 +183,25 @@ namespace Grand.Services.Messages
         /// <param name="languageId">Message language identifier</param>
         /// <returns>Queued email identifier</returns>
         int SendRecurringPaymentCancelledStoreOwnerNotification(RecurringPayment recurringPayment, string languageId);
-        
+
+        /// <summary>
+        /// Sends auction ended notification to a customer
+        /// </summary>
+        /// <param name="languageId">Message language identifier</param>
+        /// <param name="product">Auction</param>
+        /// <param name="Bid">Bid</param>
+        /// <returns>Queued email identifier</returns>
+        int SendAuctionEndedCustomerNotification(Product product, string languageId, Bid bid);
+
+        /// <summary>
+        /// Sends auction ended notification to a store owner
+        /// </summary>
+        /// <param name="languageId">Message language identifier</param>
+        /// <param name="product">Auction</param>
+        /// <param name="Bid">Bid</param>
+        /// <returns>Queued email identifier</returns>
+        int SendAuctionEndedStoreOwnerNotification(Product product, string languageId, Bid bid);
+
         #endregion
 
         #region Newsletter workflow
@@ -260,7 +278,7 @@ namespace Grand.Services.Messages
         /// <param name="languageId">Message language identifier</param>
         /// <returns>Queued email identifier</returns>
         int SendNewReturnRequestStoreOwnerNotification(ReturnRequest returnRequest, OrderItem orderItem, string languageId);
-        
+
 
         /// <summary>
         /// Sends 'Return Request status changed' message to a customer
@@ -279,7 +297,7 @@ namespace Grand.Services.Messages
         /// <param name="languageId"></param>
         /// <returns></returns>
         int SendNewReturnRequestCustomerNotification(ReturnRequest returnRequest, OrderItem orderItem, string languageId);
-        
+
         #endregion
 
         #region Forum Notifications
@@ -307,7 +325,7 @@ namespace Grand.Services.Messages
         /// <returns>Queued email identifier</returns>
         int SendNewForumPostMessage(Customer customer,
             ForumPost forumPost, ForumTopic forumTopic,
-            Forum forum, int friendlyForumTopicPageIndex, 
+            Forum forum, int friendlyForumTopicPageIndex,
             string languageId);
 
         /// <summary>

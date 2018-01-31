@@ -27,5 +27,9 @@ namespace Grand.Core.Domain.Catalog
         /// Gets or sets Order Id
         /// </summary>
         public string OrderId { get; set; }
+        /// <summary>/
+        /// Gets or sets Store Id
+        /// </summary>
+        public string StoreId { get; set; }
     }
 }

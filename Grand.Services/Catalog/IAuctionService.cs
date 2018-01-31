@@ -48,5 +48,25 @@ namespace Grand.Services.Catalog
         /// <param name="Id">Id</param>
         /// <returns>Bid</returns>
         Bid GetBid(string Id);
+
+        /// <summary>
+        /// Updates highest bid
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="bid"></param>
+        /// <param name="bidder"></param>
+        void UpdateHighestBid(Product product, decimal bid, string bidder);
+
+        /// <summary>
+        /// Updates auction ended
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="ended"></param>
+        void UpdateAuctionEnded(Product product, bool ended);
+
+        /// <summary>
+        /// Gets auctions that have to be ended
+        /// </summary>
+        IList<Product> GetAuctionsToEnd();
     }
 }

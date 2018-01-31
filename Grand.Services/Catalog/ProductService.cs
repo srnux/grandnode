@@ -2573,24 +2573,5 @@ namespace Grand.Services.Catalog
         #endregion
 
         #endregion
-
-        #region Auctions
-        /// <summary>
-        /// Updates highest bid
-        /// </summary>
-        /// <param name="product"></param>
-        /// <param name="bid"></param>
-        public void UpdateHighestBid(Product product, decimal bid, string highestBidder)
-        {
-            var builder = Builders<Product>.Filter;
-            var filter = builder.Eq(x => x.Id, product.Id);
-            var update = Builders<Product>.Update.Set(x => x.HighestBid, bid).Set(x => x.HighestBidder, highestBidder);
-
-            var result = _productRepository.Collection.UpdateOneAsync(filter, update).Result;
-
-            _eventPublisher.EntityUpdated(product);
-            _cacheManager.RemoveByPattern(string.Format(PRODUCTS_BY_ID_KEY, product.Id));
-        }
-        #endregion
     }
 }

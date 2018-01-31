@@ -542,15 +542,5 @@ namespace Grand.Services.Catalog
         void InsertDiscount(string discountId, string productId);
         void DeleteDiscount(string discountId, string productId);
         #endregion
-
-        #region Auctions
-        /// <summary>
-        /// Updates highest bid
-        /// </summary>
-        /// <param name="product"></param>
-        /// <param name="bid"></param>
-        /// <param name="bidder"></param>
-        void UpdateHighestBid(Product product, decimal bid, string bidder);
-        #endregion
     }
 }

@@ -575,7 +575,8 @@ namespace Grand.Web.Services
                 Gtin = product.Gtin,
                 StockAvailability = product.FormatStockMessage("", _localizationService, _productAttributeParser, _storeContext),
                 HasSampleDownload = product.IsDownload && product.HasSampleDownload,
-                DisplayDiscontinuedMessage = !product.Published && _catalogSettings.DisplayDiscontinuedMessageForUnpublishedProducts
+                DisplayDiscontinuedMessage = (!product.Published && _catalogSettings.DisplayDiscontinuedMessageForUnpublishedProducts) || 
+                (product.ProductType == ProductType.Auction && product.AuctionEnded)
             };
 
             //automatically generate product description?
@@ -1342,6 +1343,7 @@ namespace Grand.Web.Services
             model.HighestBidValue = product.HighestBid;
             model.AddToCart.IsAuction = true;
             model.EndTime = product.AvailableEndDateTimeUtc;
+            model.AuctionEnded = product.AuctionEnded;
             #endregion
 
             return model;

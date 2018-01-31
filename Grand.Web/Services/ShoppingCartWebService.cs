@@ -1087,26 +1087,33 @@ namespace Grand.Web.Services
                 }
             }
 
-            var sci = customer.ShoppingCartItems.FirstOrDefault(x => x.ProductId == product.Id && (string.IsNullOrEmpty(x.AttributesXml) ? "" : x.AttributesXml) == attributesXml);
-            model.ItemQuantity = sci.Quantity;
-
-            //unit prices
-            if (product.CallForPrice)
+            if (product.ProductType != ProductType.Auction)
             {
-                model.Price = _localizationService.GetResource("Products.CallForPrice");
+                var sci = customer.ShoppingCartItems.FirstOrDefault(x => x.ProductId == product.Id && (string.IsNullOrEmpty(x.AttributesXml) ? "" : x.AttributesXml) == attributesXml);
+                model.ItemQuantity = sci.Quantity;
+
+                //unit prices
+                if (product.CallForPrice)
+                {
+                    model.Price = _localizationService.GetResource("Products.CallForPrice");
+                }
+                else
+                {
+                    decimal taxRate;
+                    decimal shoppingCartUnitPriceWithDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetUnitPrice(sci), out taxRate);
+                    decimal shoppingCartUnitPriceWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(shoppingCartUnitPriceWithDiscountBase, _workContext.WorkingCurrency);
+                    model.Price = _priceFormatter.FormatPrice(shoppingCartUnitPriceWithDiscount);
+                    model.DecimalPrice = shoppingCartUnitPriceWithDiscount;
+                    model.TotalPrice = _priceFormatter.FormatPrice(shoppingCartUnitPriceWithDiscount * sci.Quantity);
+                }
+
+                //picture
+                model.Picture = PrepareCartItemPicture(product, sci.AttributesXml, _mediaSettings.AddToCartThumbPictureSize, true, model.ProductName);
             }
             else
             {
-                decimal taxRate;
-                decimal shoppingCartUnitPriceWithDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetUnitPrice(sci), out taxRate);
-                decimal shoppingCartUnitPriceWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(shoppingCartUnitPriceWithDiscountBase, _workContext.WorkingCurrency);
-                model.Price = _priceFormatter.FormatPrice(shoppingCartUnitPriceWithDiscount);
-                model.DecimalPrice = shoppingCartUnitPriceWithDiscount;
-                model.TotalPrice = _priceFormatter.FormatPrice(shoppingCartUnitPriceWithDiscount * sci.Quantity);
+                model.Picture = PrepareCartItemPicture(product, null, _mediaSettings.AddToCartThumbPictureSize, true, model.ProductName);
             }
-
-            //picture
-            model.Picture = PrepareCartItemPicture(product, sci.AttributesXml, _mediaSettings.AddToCartThumbPictureSize, true, model.ProductName);
 
             var cart = _workContext.CurrentCustomer.ShoppingCartItems
                 .Where(x => x.ShoppingCartType == cartType)
