@@ -1297,6 +1297,7 @@ namespace Grand.Services.Messages
                 "%PrivateMessage.Subject%", 
                 "%PrivateMessage.Text%",
                 "%BackInStockSubscription.ProductName%",
+                "%BackInStockSubscription.ProductUrl%",
                 "%Auctions.ProductName%",
                 "%Auctions.Price%",
                 "%Auctions.EndTime%",

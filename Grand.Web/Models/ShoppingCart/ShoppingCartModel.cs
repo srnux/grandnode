@@ -70,6 +70,7 @@ namespace Grand.Web.Models.ShoppingCart
             public bool AllowItemEditing { get; set; }
             public bool DisableRemoval { get; set; }
             public string ReservationInfo { get; set; }
+            public string AuctionInfo { get; set; }
             public string Parameter { get; set; }
             public IList<string> Warnings { get; set; }
 

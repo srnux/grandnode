@@ -17991,4 +17991,55 @@
   <LocaleResource Name="Wishlist.YourWishlistURL">
     <Value>Your wishlist URL for sharing</Value>
   </LocaleResource>
+  <LocaleResource Name="Products.Price.Currentprice">
+    <Value>Current price</Value>
+  </LocaleResource>
+  <LocaleResource Name="Products.BuyNowPrice">
+    <Value>Buy now price</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.BuyNow">
+    <Value>Buy now</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.Bid">
+    <Value>Bid</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.Auctionends">
+    <Value>Auction ends</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.Mustberegisteredtobid">
+    <Value>You must be registered to bid</Value>
+  </LocaleResource>
+  <LocaleResource Name="AddToCart.Yourbid">
+    <Value>Your bid</Value>
+  </LocaleResource>
+  <LocaleResource Name="shoppingcart.yourbidhasbeenplaced">
+    <Value>Your bid has been placed</Value>
+  </LocaleResource>
+  <LocaleResource Name="AddToCart.ViewAuctions">
+    <Value>Go to your auctions</Value>
+  </LocaleResource>
+  <LocaleResource Name="Addtocart.Auctions.Ongoing">
+    <Value>You have {0} ongoing auctions</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Bids">
+    <Value>Bids</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Bids.SaveBeforeEdit">
+    <Value>You need to save before editing this section</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Bids.Date">
+    <Value>Date</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Bids.CustomerId">
+    <Value>Customer Id</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Bids.Amount">
+    <Value>Amount</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Bids.CantDeleteWithOrder">
+    <Value>Cannot delete bid wiht order id</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.Auctionwonon">
+    <Value>Auction won on</Value>
+  </LocaleResource>
 </Language>

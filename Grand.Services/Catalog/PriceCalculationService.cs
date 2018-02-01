@@ -657,7 +657,7 @@ namespace Grand.Services.Catalog
                 }
 
                 //get price of a product (with previously calculated price of all attributes)
-                if (product.CustomerEntersPrice)
+                if (product.CustomerEntersPrice || product.ProductType == ProductType.Auction)
                 {
                     finalPrice = customerEnteredPrice;
                 }

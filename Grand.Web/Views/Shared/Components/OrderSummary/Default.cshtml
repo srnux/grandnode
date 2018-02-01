@@ -67,6 +67,12 @@
                                                     @Html.Raw(item.AttributeInfo)
                                                 </div>
                                                 }
+                                        @if (!String.IsNullOrEmpty(item.AuctionInfo))
+                                        {
+                                            <div class="attributes small">
+                                                @Html.Raw(item.AuctionInfo)
+                                            </div>
+                                        }
                                         @if (!String.IsNullOrEmpty(item.RecurringInfo))
                                                 {
                                                 <div class="recurring-info">
@@ -194,6 +200,12 @@
                                                     <div class="attributes small">
                                                         @Html.Raw(item.AttributeInfo)
                                                     </div>
+                                            }
+                                            @if (!String.IsNullOrEmpty(item.AuctionInfo))
+                                            {
+                                                <div class="attributes small">
+                                                    @Html.Raw(item.AuctionInfo)
+                                                </div>
                                             }
                                             @if (!String.IsNullOrEmpty(item.RecurringInfo))
                                             {

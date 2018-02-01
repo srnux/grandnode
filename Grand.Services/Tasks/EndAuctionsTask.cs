@@ -23,11 +23,10 @@ namespace Grand.Services.Tasks
         private readonly LocalizationSettings _localizationSettings;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICustomerService _customerService;
-        private readonly ILogger _logger;
 
         public EndAuctionsTask(IProductService productService, IAuctionService auctionService, IQueuedEmailService queuedEmailService,
             IWorkflowMessageService workflowMessageService, LocalizationSettings localizationService, IShoppingCartService shoppingCartService,
-            ICustomerService customerService, ILogger logger)
+            ICustomerService customerService)
         {
             this._productService = productService;
             this._auctionService = auctionService;
@@ -35,7 +34,6 @@ namespace Grand.Services.Tasks
             this._localizationSettings = localizationService;
             this._shoppingCartService = shoppingCartService;
             this._customerService = customerService;
-            this._logger = logger;
         }
 
         /// <summary>
@@ -54,16 +52,7 @@ namespace Grand.Services.Tasks
                 _workflowMessageService.SendAuctionEndedStoreOwnerNotification(auctionToEnd, _localizationSettings.DefaultAdminLanguageId, bid);
 
                 var warnings = _shoppingCartService.AddToCart(_customerService.GetCustomerById(bid.CustomerId), bid.ProductId, Core.Domain.Orders.ShoppingCartType.Auctions,
-                    bid.StoreId);
-
-                string s = "";
-
-                foreach (var item in warnings)
-                {
-                    s += item + "\n";
-                }
-
-                _logger.InsertLog(Core.Domain.Logging.LogLevel.Debug, "Warnings", s);
+                    bid.StoreId, customerEnteredPrice: bid.Amount);
 
                 //_auctionService.UpdateAuctionEnded(auctionToEnd, true);
             }

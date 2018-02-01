@@ -418,6 +418,12 @@ namespace Grand.Web.Services
                     });
                 }
 
+                if (sci.ShoppingCartType == ShoppingCartType.Auctions)
+                {
+                    cartItemModel.DisableRemoval = true;
+                    cartItemModel.AuctionInfo = _localizationService.GetResource("ShoppingCart.auctionwonon") + " " +  product.AvailableEndDateTimeUtc;
+                }
+
                 //recurring info
                 if (product.IsRecurring)
                     cartItemModel.RecurringInfo = string.Format(_localizationService.GetResource("ShoppingCart.RecurringPeriod"), product.RecurringCycleLength, product.RecurringCyclePeriod.GetLocalizedEnum(_localizationService, _workContext));
@@ -460,6 +466,7 @@ namespace Grand.Web.Services
                     decimal shoppingCartUnitPriceWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(shoppingCartUnitPriceWithDiscountBase, _workContext.WorkingCurrency);
                     cartItemModel.UnitPrice = _priceFormatter.FormatPrice(shoppingCartUnitPriceWithDiscount);
                 }
+
                 //subtotal, discount
                 if (product.CallForPrice)
                 {
@@ -797,7 +804,7 @@ namespace Grand.Web.Services
             if (customer.HasShoppingCartItems)
             {
                 var cart = customer.ShoppingCartItems
-                    .Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart)
+                    .Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart || sci.ShoppingCartType == ShoppingCartType.Auctions)
                     .LimitPerStore(storeId)
                     .ToList();
                 model.TotalProducts = cart.Sum(x => x.Quantity);
