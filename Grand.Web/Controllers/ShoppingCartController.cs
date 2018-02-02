@@ -519,6 +519,16 @@ namespace Grand.Web.Controllers
 
             //save item
             var addToCartWarnings = new List<string>();
+
+            if (product.AvailableEndDateTimeUtc.HasValue && product.AvailableEndDateTimeUtc.Value < DateTime.UtcNow)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = _localizationService.GetResource("ShoppingCart.NotAvailable")
+                });
+            }
+
             if (updatecartitem == null)
             {
                 //add to the cart
@@ -691,6 +701,24 @@ namespace Grand.Web.Controllers
                 {
                     success = false,
                     message = _localizationService.GetResource("ShoppingCart.BidMustBeHigher")
+                });
+            }
+
+            if (!product.AvailableEndDateTimeUtc.HasValue)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = _localizationService.GetResource("ShoppingCart.NotAvailable")
+                });
+            }
+
+            if (product.AvailableEndDateTimeUtc < DateTime.UtcNow)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = _localizationService.GetResource("ShoppingCart.NotAvailable")
                 });
             }
 

@@ -5588,7 +5588,8 @@ namespace Grand.Web.Areas.Admin.Controllers
                     BidId = x.Id,
                     Amount = _priceFormatter.FormatPrice(x.Amount),
                     Date = x.Date,
-                    CustomerId = x.CustomerId
+                    CustomerId = x.CustomerId,
+                    OrderId = x.OrderId
                 }).ToList();
 
             var gridModel = new DataSourceResult

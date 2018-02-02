@@ -627,6 +627,7 @@ namespace Grand.Web.Services
                     "/customer/checkusernameavailability",
                     "/customer/downloadableproducts",
                     "/customer/info",
+                    "/customer/auctions",
                     "/deletepm",
                     "/emailwishlist",
                     "/inboxupdate",

@@ -49,7 +49,7 @@ namespace Grand.Web.Areas.Admin.Models.Catalog
         public int ProductTypeId { get; set; }
         [GrandResourceDisplayName("Admin.Catalog.Products.Fields.ProductType")]
         public string ProductTypeName { get; set; }
-
+        public bool AuctionEnded { get; set; }
 
         [GrandResourceDisplayName("Admin.Catalog.Products.Fields.AssociatedToProductName")]
         public string AssociatedToProductId { get; set; }

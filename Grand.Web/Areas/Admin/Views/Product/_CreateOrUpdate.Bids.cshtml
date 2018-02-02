@@ -6,6 +6,8 @@
 @using Grand.Core.Domain.Catalog;
 @if (!String.IsNullOrEmpty(Model.Id))
 {
+    @Html.HiddenFor(x => x.AuctionEnded)
+
     <div class="panel panel-default">
         <div class="panel-body">
             <div id="bids-grid"></div>
@@ -69,6 +71,10 @@
             }, {
                 field: "Amount",
                 title: "@T("Admin.Catalog.Products.Bids.Amount")",
+                width: 200
+            }, {
+                field: "OrderId",
+                title: "@T("Admin.Catalog.Products.Bids.OrderId")",
                 width: 200
             }, {
                 command: [{

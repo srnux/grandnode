@@ -314,6 +314,9 @@ namespace Grand.Web.Infrastructure
             routeBuilder.MapLocalizedRoute("CustomerAvatar",
                             "customer/avatar",
                             new { controller = "Customer", action = "Avatar" });
+            routeBuilder.MapLocalizedRoute("CustomerAuctions",
+                            "customer/auctions",
+                            new { controller = "Customer", action = "Auctions" });
             routeBuilder.MapLocalizedRoute("AccountActivation",
                             "customer/activation",
                             new { controller = "Customer", action = "AccountActivation" });

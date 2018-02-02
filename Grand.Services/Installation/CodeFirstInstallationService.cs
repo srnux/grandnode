@@ -5151,6 +5151,7 @@ namespace Grand.Services.Installation
                 NotifyNewCustomerRegistration = false,
                 HideDownloadableProductsTab = false,
                 HideBackInStockSubscriptionsTab = false,
+                HideAuctionsTab = false,
                 DownloadableProductsValidateUser = false,
                 CustomerNameFormat = CustomerNameFormat.ShowFirstName,
                 GenderEnabled = true,

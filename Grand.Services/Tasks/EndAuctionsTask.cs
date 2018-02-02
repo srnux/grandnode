@@ -54,7 +54,7 @@ namespace Grand.Services.Tasks
                 var warnings = _shoppingCartService.AddToCart(_customerService.GetCustomerById(bid.CustomerId), bid.ProductId, Core.Domain.Orders.ShoppingCartType.Auctions,
                     bid.StoreId, customerEnteredPrice: bid.Amount);
 
-                //_auctionService.UpdateAuctionEnded(auctionToEnd, true);
+                _auctionService.UpdateAuctionEnded(auctionToEnd, true);
             }
         }
     }

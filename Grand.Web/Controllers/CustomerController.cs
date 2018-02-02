@@ -1242,5 +1242,20 @@ namespace Grand.Web.Controllers
         }
 
         #endregion
+
+        #region My account / Auctions
+
+        [HttpsRequirement(SslRequirement.Yes)]
+        public virtual IActionResult Auctions()
+        {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return Challenge();
+
+            var model = _customerWebService.PrepareAuctions(_workContext.CurrentCustomer);
+
+            return View(model);
+        }
+
+        #endregion
     }
 }
