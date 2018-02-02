@@ -18070,7 +18070,7 @@
     <Value>Ongoing</Value>
   </LocaleResource>
   <LocaleResource Name="Account.CustomerAuctions.Status.Won">
-    <Value>Ongoing</Value>
+    <Value>Won</Value>
   </LocaleResource>
   <LocaleResource Name="Account.CustomerAuctions.AuctionEndTime">
     <Value>Auction end time</Value>
