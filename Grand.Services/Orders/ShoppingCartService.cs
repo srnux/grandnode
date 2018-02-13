@@ -72,10 +72,10 @@ namespace Grand.Services.Orders
         /// <param name="customerActionEventService">Customer action event service</param>
         /// <param name="productReservationService">Product reservation service</param>
         public ShoppingCartService(
-            IWorkContext workContext, 
+            IWorkContext workContext,
             IStoreContext storeContext,
             ICurrencyService currencyService,
-            IProductService productService, 
+            IProductService productService,
             ILocalizationService localizationService,
             IProductAttributeParser productAttributeParser,
             ICheckoutAttributeService checkoutAttributeService,
@@ -84,7 +84,7 @@ namespace Grand.Services.Orders
             ICustomerService customerService,
             ShoppingCartSettings shoppingCartSettings,
             IEventPublisher eventPublisher,
-            IPermissionService permissionService, 
+            IPermissionService permissionService,
             IAclService aclService,
             IStoreMappingService storeMappingService,
             IGenericAttributeService genericAttributeService,
@@ -125,7 +125,7 @@ namespace Grand.Services.Orders
         /// <param name="shoppingCartItem">Shopping cart item</param>
         /// <param name="resetCheckoutData">A value indicating whether to reset checkout data</param>
         /// <param name="ensureOnlyActiveCheckoutAttributes">A value indicating whether to ensure that only active checkout attributes are attached to the current customer</param>
-        public virtual void DeleteShoppingCartItem(string customerId, ShoppingCartItem shoppingCartItem, bool resetCheckoutData = true, 
+        public virtual void DeleteShoppingCartItem(string customerId, ShoppingCartItem shoppingCartItem, bool resetCheckoutData = true,
             bool ensureOnlyActiveCheckoutAttributes = false)
         {
             if (shoppingCartItem == null)
@@ -236,7 +236,7 @@ namespace Grand.Services.Orders
                     if (rp != null)
                         requiredProducts.Add(rp);
                 }
-                
+
                 foreach (var rp in requiredProducts)
                 {
                     //ensure that product is in the cart
@@ -260,7 +260,7 @@ namespace Grand.Services.Orders
                             {
                                 //pass 'false' for 'automaticallyAddRequiredProductsIfEnabled' to prevent circular references
                                 var addToCartWarnings = AddToCart(customer: customer,
-                                    productId: rp.Id, 
+                                    productId: rp.Id,
                                     shoppingCartType: shoppingCartType,
                                     storeId: storeId,
                                     automaticallyAddRequiredProductsIfEnabled: false);
@@ -288,7 +288,7 @@ namespace Grand.Services.Orders
 
             return warnings;
         }
-        
+
         /// <summary>
         /// Validates a product for standard properties
         /// </summary>
@@ -322,7 +322,7 @@ namespace Grand.Services.Orders
             {
                 warnings.Add("You can't add grouped product");
             }
-            
+
             //ACL
             if (!_aclService.Authorize(product, customer))
             {
@@ -416,7 +416,7 @@ namespace Grand.Services.Orders
                             {
                                 var _qty = quantity * item.Quantity;
                                 var p1 = _productService.GetProductById(item.ProductId);
-                                if(p1!=null)
+                                if (p1 != null)
                                 {
                                     if (p1.BackorderMode == BackorderMode.NoBackorders)
                                     {
@@ -506,9 +506,9 @@ namespace Grand.Services.Orders
         /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="ignoreNonCombinableAttributes">A value indicating whether we should ignore non-combinable attributes</param>
         /// <returns>Warnings</returns>
-        public virtual IList<string> GetShoppingCartItemAttributeWarnings(Customer customer, 
+        public virtual IList<string> GetShoppingCartItemAttributeWarnings(Customer customer,
             ShoppingCartType shoppingCartType,
-            Product product, 
+            Product product,
             int quantity = 1,
             string attributesXml = "",
             bool ignoreNonCombinableAttributes = false)
@@ -579,9 +579,9 @@ namespace Grand.Services.Orders
                     {
                         var paa = _productAttributeService.GetProductAttributeById(a2.ProductAttributeId);
                         var notFoundWarning = !string.IsNullOrEmpty(a2.TextPrompt) ?
-                            a2.TextPrompt : 
+                            a2.TextPrompt :
                             string.Format(_localizationService.GetResource("ShoppingCart.SelectAttribute"), paa.GetLocalized(a => a.Name));
-                        
+
                         warnings.Add(notFoundWarning);
                     }
                 }
@@ -611,7 +611,7 @@ namespace Grand.Services.Orders
             {
                 if (!pam.ValidationRulesAllowed())
                     continue;
-                
+
                 //minimum length
                 if (pam.ValidationMinLength.HasValue)
                 {
@@ -676,7 +676,7 @@ namespace Grand.Services.Orders
                             var attributeName = productAttribute.GetLocalized(a => a.Name);
                             var attributeValueName = attributeValue.GetLocalized(a => a.Name);
                             warnings.Add(string.Format(
-                                _localizationService.GetResource("ShoppingCart.AssociatedAttributeWarning"), 
+                                _localizationService.GetResource("ShoppingCart.AssociatedAttributeWarning"),
                                 attributeName, attributeValueName, associatedProductWarning));
                         }
                     }
@@ -883,7 +883,7 @@ namespace Grand.Services.Orders
                 throw new ArgumentNullException("product");
 
             var warnings = new List<string>();
-            
+
             //standard properties
             if (getStandardWarnings)
                 warnings.AddRange(GetStandardWarnings(customer, shoppingCartType, product, attributesXml, customerEnteredPrice, quantity));
@@ -915,7 +915,7 @@ namespace Grand.Services.Orders
         /// <param name="checkoutAttributesXml">Checkout attributes in XML format</param>
         /// <param name="validateCheckoutAttributes">A value indicating whether to validate checkout attributes</param>
         /// <returns>Warnings</returns>
-        public virtual IList<string> GetShoppingCartWarnings(IList<ShoppingCartItem> shoppingCart, 
+        public virtual IList<string> GetShoppingCartWarnings(IList<ShoppingCartItem> shoppingCart,
             string checkoutAttributesXml, bool validateCheckoutAttributes)
         {
             var warnings = new List<string>();
@@ -1055,7 +1055,7 @@ namespace Grand.Services.Orders
             string productId,
             string attributesXml = "",
             decimal customerEnteredPrice = decimal.Zero,
-            DateTime? rentalStartDate = null, 
+            DateTime? rentalStartDate = null,
             DateTime? rentalEndDate = null)
         {
             if (shoppingCart == null)
@@ -1129,7 +1129,7 @@ namespace Grand.Services.Orders
             ShoppingCartType shoppingCartType, string storeId, string attributesXml = null,
             decimal customerEnteredPrice = decimal.Zero,
             DateTime? rentalStartDate = null, DateTime? rentalEndDate = null,
-            int quantity = 1, bool automaticallyAddRequiredProductsIfEnabled = true, 
+            int quantity = 1, bool automaticallyAddRequiredProductsIfEnabled = true,
             string reservationId = "", string parameter = "", string duration = "")
         {
             if (customer == null)
@@ -1183,12 +1183,26 @@ namespace Grand.Services.Orders
                 foreach (var group in grouped)
                 {
                     bool groupCanBeBooked = true;
-                    for (DateTime iterator = rentalStartDate.Value; iterator < rentalEndDate.Value; iterator += new TimeSpan(24, 0, 0))
+                    if (product.IncludeBothDates && product.IntervalUnitType == IntervalUnit.Day)
                     {
-                        if (!group.Select(x => x.Date).Contains(iterator))
+                        for (DateTime iterator = rentalStartDate.Value; iterator <= rentalEndDate.Value; iterator += new TimeSpan(24, 0, 0))
                         {
-                            groupCanBeBooked = false;
-                            break;
+                            if (!group.Select(x => x.Date).Contains(iterator))
+                            {
+                                groupCanBeBooked = false;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (DateTime iterator = rentalStartDate.Value; iterator < rentalEndDate.Value; iterator += new TimeSpan(24, 0, 0))
+                        {
+                            if (!group.Select(x => x.Date).Contains(iterator))
+                            {
+                                groupCanBeBooked = false;
+                                break;
+                            }
                         }
                     }
 
@@ -1223,7 +1237,7 @@ namespace Grand.Services.Orders
                 //update existing shopping cart item
                 int newQuantity = shoppingCartItem.Quantity + quantity;
                 warnings.AddRange(GetShoppingCartItemWarnings(customer, shoppingCartType, product,
-                    storeId, attributesXml, 
+                    storeId, attributesXml,
                     customerEnteredPrice, rentalStartDate, rentalEndDate,
                     newQuantity, automaticallyAddRequiredProductsIfEnabled));
 
@@ -1243,7 +1257,7 @@ namespace Grand.Services.Orders
                 //new shopping cart item
                 warnings.AddRange(GetShoppingCartItemWarnings(customer, shoppingCartType, product,
                     storeId, attributesXml, customerEnteredPrice,
-                    rentalStartDate, rentalEndDate, 
+                    rentalStartDate, rentalEndDate,
                     quantity, automaticallyAddRequiredProductsIfEnabled, reservationId: reservationId));
                 if (!warnings.Any())
                 {
@@ -1273,7 +1287,7 @@ namespace Grand.Services.Orders
                     }
 
                     DateTime now = DateTime.UtcNow;
-                    
+
                     shoppingCartItem = new ShoppingCartItem
                     {
                         ShoppingCartType = shoppingCartType,
@@ -1312,14 +1326,29 @@ namespace Grand.Services.Orders
 
             if (!warnings.Any() && groupToBook != null)
             {
-                foreach (var item in groupToBook.Where(x => x.Date >= rentalStartDate && x.Date < rentalEndDate))
+                if (product.IncludeBothDates && product.IntervalUnitType == IntervalUnit.Day)
                 {
-                    _productReservationService.InsertCustomerReservationsHelper(new CustomerReservationsHelper
+                    foreach (var item in groupToBook.Where(x => x.Date >= rentalStartDate && x.Date <= rentalEndDate))
                     {
-                        CustomerId = customer.Id,
-                        ReservationId = item.Id,
-                        ShoppingCartItemId = shoppingCartItem.Id
-                    });
+                        _productReservationService.InsertCustomerReservationsHelper(new CustomerReservationsHelper
+                        {
+                            CustomerId = customer.Id,
+                            ReservationId = item.Id,
+                            ShoppingCartItemId = shoppingCartItem.Id
+                        });
+                    }
+                }
+                else
+                {
+                    foreach (var item in groupToBook.Where(x => x.Date >= rentalStartDate && x.Date < rentalEndDate))
+                    {
+                        _productReservationService.InsertCustomerReservationsHelper(new CustomerReservationsHelper
+                        {
+                            CustomerId = customer.Id,
+                            ReservationId = item.Id,
+                            ShoppingCartItemId = shoppingCartItem.Id
+                        });
+                    }
                 }
             }
 
@@ -1342,7 +1371,7 @@ namespace Grand.Services.Orders
         public virtual IList<string> UpdateShoppingCartItem(Customer customer,
             string shoppingCartItemId, string attributesXml,
             decimal customerEnteredPrice,
-            DateTime? rentalStartDate = null, DateTime? rentalEndDate = null, 
+            DateTime? rentalStartDate = null, DateTime? rentalEndDate = null,
             int quantity = 1, bool resetCheckoutData = true, string reservationId = "", string sciId = "")
         {
             if (customer == null)
@@ -1364,7 +1393,7 @@ namespace Grand.Services.Orders
                     //check warnings
                     warnings.AddRange(GetShoppingCartItemWarnings(customer, shoppingCartItem.ShoppingCartType,
                         product, shoppingCartItem.StoreId,
-                        attributesXml, customerEnteredPrice, 
+                        attributesXml, customerEnteredPrice,
                         rentalStartDate, rentalEndDate, quantity, false, reservationId: reservationId, sciId: sciId));
                     if (!warnings.Any())
                     {
@@ -1381,7 +1410,7 @@ namespace Grand.Services.Orders
                         shoppingCartItem.IsShipEnabled = product.IsShipEnabled;
                         shoppingCartItem.IsTaxExempt = product.IsTaxExempt;
                         shoppingCartItem.IsGiftCard = product.IsGiftCard;
-                        
+
                         _customerService.UpdateShoppingCartItem(customer.Id, shoppingCartItem);
 
                         //event notification
@@ -1397,7 +1426,7 @@ namespace Grand.Services.Orders
 
             return warnings;
         }
-        
+
         /// <summary>
         /// Migrate shopping cart
         /// </summary>

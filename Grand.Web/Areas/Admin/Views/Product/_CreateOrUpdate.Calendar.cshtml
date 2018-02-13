@@ -10,36 +10,42 @@
         <h2>@T("Admin.Catalog.Products.Calendar.Calendarconfiguration")</h2>
         <div class="form-body">
             <div class="form-group">
-                
-                    <div class="form-group">
-                        @Html.GrandLabelFor(model => model.CalendarModel.StartDateUtc)
-                        <div class="col-md-2 col-sm-2">
-                            @Html.GrandEditorFor(model => model.CalendarModel.StartDateUtc)
-                        </div>
-                        <div class="col-md-6" id="pnlStartTime">
-                            <label class="col-md-2 control-label">@T("Admin.Catalog.Products.Fields.Calendar.StartTime")</label>
-                            <div class="col-md-3 col-sm-3">
-                                @Html.GrandEditorFor(model => model.CalendarModel.StartTime)
-                            </div>
-                        </div>
 
+                <div class="form-group">
+                    @Html.GrandLabelFor(model => model.CalendarModel.StartDateUtc)
+                    <div class="col-md-2 col-sm-2">
+                        @Html.GrandEditorFor(model => model.CalendarModel.StartDateUtc)
                     </div>
-                    <div class="form-group" >
-                        @Html.GrandLabelFor(model => model.CalendarModel.EndDateUtc)
-                        <div class="col-md-2 col-sm-2">
-                            @Html.GrandEditorFor(model => model.CalendarModel.EndDateUtc)
+                    <div class="col-md-6" id="pnlStartTime">
+                        <label class="col-md-2 control-label">@T("Admin.Catalog.Products.Fields.Calendar.StartTime")</label>
+                        <div class="col-md-3 col-sm-3">
+                            @Html.GrandEditorFor(model => model.CalendarModel.StartTime)
                         </div>
-                        <div class="col-md-6" id="pnlEndTime">
-                            <label class="col-md-2 control-label">@T("Admin.Catalog.Products.Fields.Calendar.EndTime")</label>
-                            <div class="col-md-3 col-sm-3">
-                                @Html.GrandEditorFor(model => model.CalendarModel.EndTime)
-                            </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    @Html.GrandLabelFor(model => model.CalendarModel.EndDateUtc)
+                    <div class="col-md-2 col-sm-2">
+                        @Html.GrandEditorFor(model => model.CalendarModel.EndDateUtc)
+                    </div>
+                    <div class="col-md-6" id="pnlEndTime">
+                        <label class="col-md-2 control-label">@T("Admin.Catalog.Products.Fields.Calendar.EndTime")</label>
+                        <div class="col-md-3 col-sm-3">
+                            @Html.GrandEditorFor(model => model.CalendarModel.EndTime)
                         </div>
-                     </div>
-                
-                
+                    </div>
+                </div>
+                <div class="form-inline" id="pnlIncludeBothDates">
+                    @Html.GrandLabelFor(model => model.CalendarModel.IncludeBothDates)
+                    <div class="col-md-9 col-sm-9">
+                        <span>
+                            @Html.GrandEditorFor(model => model.CalendarModel.IncludeBothDates)
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="form-inline" >
+            <div class="form-inline">
                 @Html.GrandLabelFor(model => model.CalendarModel.Interval)
                 <div class="col-md-9 col-sm-9">
                     <span id="pnlInterval">
@@ -54,7 +60,7 @@
                     @Html.GrandEditorFor(model => model.CalendarModel.Quantity)
                 </div>
             </div>
-        
+
             <div class="form-group" id="pnlResource">
                 @Html.GrandLabelFor(model => model.CalendarModel.Resource)
                 <div class="col-md-9 col-sm-9">
@@ -136,6 +142,7 @@
                         $("#pnlStartTime").hide();
                         $("#pnlEndTime").hide();
                         $("#pnlResource").show();
+                        $("#pnlIncludeBothDates").show();
                         $("#pnlParameter").hide();
                         $("#pnlQuantity").hide();
                         $("#pnlInterval").hide();
@@ -144,6 +151,7 @@
                         $("#pnlStartTime").show();
                         $("#pnlEndTime").show();
                         $("#pnlResource").hide();
+                        $("#pnlIncludeBothDates").hide();
                         $("#pnlParameter").show();
                         $("#pnlQuantity").show();
                         $("#pnlInterval").show();
@@ -175,6 +183,7 @@
 
                     var interval = $("#@Html.FieldIdFor(model => model.CalendarModel.Interval)").val();
                     var intervalUnit = $("#@Html.FieldIdFor(model => model.CalendarModel.IntervalUnit)").val();
+                    var includeBothDates = $("#@Html.FieldIdFor(model => model.CalendarModel.IncludeBothDates)").prop("checked");
                     var quantity = $("#@Html.FieldIdFor(model => model.CalendarModel.Quantity)").val();
                     var monday = $("#@Html.FieldIdFor(model => model.CalendarModel.Monday)").prop("checked");
                     var tuesday = $("#@Html.FieldIdFor(model => model.CalendarModel.Tuesday)").prop("checked");
@@ -194,6 +203,7 @@
                         EndTime: hourTo,
                         Interval: interval,
                         IntervalUnit: intervalUnit,
+                        IncludeBothDates: includeBothDates,
                         Quantity: quantity,
                         Monday: monday,
                         Tuesday: tuesday,

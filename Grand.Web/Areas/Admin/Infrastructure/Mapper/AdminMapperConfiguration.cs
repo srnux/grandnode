@@ -343,6 +343,7 @@ namespace Grand.Web.Areas.Admin.Infrastructure.Mapper
                 .ForMember(dest => dest.ManageInventoryMethod, mo => mo.Ignore())
                 .ForMember(dest => dest.RecurringCyclePeriod, mo => mo.Ignore())
                 .ForMember(dest => dest.Interval, mo => mo.Ignore())
+                .ForMember(dest => dest.IncludeBothDates, mo => mo.Ignore())
                 .ForMember(dest => dest.IntervalUnitId, mo => mo.Ignore())
                 .ForMember(dest => dest.ProductAttributeMappings, mo => mo.Ignore())
                 .ForMember(dest => dest.ProductAttributeCombinations, mo => mo.Ignore())

@@ -650,6 +650,8 @@
   <LocaleResource Name="Account.Auctions.NoOngoingAuctions">
     <Value>You don't have participate in any auctions.</Value>
   </LocaleResource>
-
+  <LocaleResource Name="Admin.Catalog.Products.Fields.Calendar.IncludeBothDates">
+    <Value>Include both dates</Value>
+  </LocaleResource>
 </Language>
 

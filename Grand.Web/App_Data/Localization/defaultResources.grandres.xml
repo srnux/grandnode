@@ -18162,4 +18162,7 @@
   <LocaleResource Name="Wishlist.YourWishlistURL">
     <Value>Your wishlist URL for sharing</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.Calendar.IncludeBothDates">
+    <Value>Include both dates</Value>
+  </LocaleResource>
 </Language>

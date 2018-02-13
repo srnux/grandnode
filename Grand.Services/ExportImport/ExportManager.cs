@@ -348,6 +348,7 @@ namespace Grand.Services.ExportImport
                 xmlWriter.WriteElementString("RecurringCyclePeriodId", null, product.RecurringCyclePeriodId.ToString());
                 xmlWriter.WriteElementString("RecurringTotalCycles", null, product.RecurringTotalCycles.ToString());
                 xmlWriter.WriteElementString("Interval", null, product.Interval.ToString());
+                xmlWriter.WriteElementString("IncludeBothDates", null, product.IncludeBothDates.ToString());
                 xmlWriter.WriteElementString("IntervalUnitId", null, product.IntervalUnitId.ToString());
                 xmlWriter.WriteElementString("IsShipEnabled", null, product.IsShipEnabled.ToString());
                 xmlWriter.WriteElementString("IsFreeShipping", null, product.IsFreeShipping.ToString());
@@ -623,6 +624,7 @@ namespace Grand.Services.ExportImport
                 new PropertyByName<Product>("RecurringCyclePeriodId", p => p.RecurringCyclePeriodId),
                 new PropertyByName<Product>("RecurringTotalCycles", p => p.RecurringTotalCycles),
                 new PropertyByName<Product>("Interval", p => p.Interval),
+                new PropertyByName<Product>("IncludeBothDates", p => p.IncludeBothDates),
                 new PropertyByName<Product>("IntervalUnitId", p => p.IntervalUnitId),
                 new PropertyByName<Product>("IsShipEnabled", p => p.IsShipEnabled),
                 new PropertyByName<Product>("IsFreeShipping", p => p.IsFreeShipping),

@@ -436,7 +436,7 @@ namespace Grand.Services.Orders
                 details.OrderSubTotalDiscountInclTax = orderSubTotalDiscountAmount;
 
                 foreach (var disc in orderSubTotalAppliedDiscounts)
-                    if(!details.AppliedDiscounts.Where(x=>x.DiscountId == disc.DiscountId).Any())
+                    if (!details.AppliedDiscounts.Where(x => x.DiscountId == disc.DiscountId).Any())
                         details.AppliedDiscounts.Add(disc);
 
                 //sub total (excl tax)
@@ -609,7 +609,7 @@ namespace Grand.Services.Orders
             //discount history
             foreach (var disc in orderAppliedDiscounts)
             {
-                if(!details.AppliedDiscounts.Where(x=>x.DiscountId == disc.DiscountId).Any())
+                if (!details.AppliedDiscounts.Where(x => x.DiscountId == disc.DiscountId).Any())
                     details.AppliedDiscounts.Add(disc);
             }
 
@@ -1259,14 +1259,14 @@ namespace Grand.Services.Orders
 
                             foreach (var disc in scDiscounts)
                             {
-                                if(!details.AppliedDiscounts.Where(x=>x.DiscountId == disc.DiscountId).Any())
+                                if (!details.AppliedDiscounts.Where(x => x.DiscountId == disc.DiscountId).Any())
                                     details.AppliedDiscounts.Add(disc);
                             }
 
                             //attributes
                             string attributeDescription = _productAttributeFormatter.FormatAttributes(product, sc.AttributesXml, details.Customer);
 
-                            if(string.IsNullOrEmpty(attributeDescription) && sc.ShoppingCartType == ShoppingCartType.Auctions)
+                            if (string.IsNullOrEmpty(attributeDescription) && sc.ShoppingCartType == ShoppingCartType.Auctions)
                                 attributeDescription = _localizationService.GetResource("ShoppingCart.auctionwonon") + " " + product.AvailableEndDateTimeUtc;
 
                             var itemWeight = _shippingService.GetShoppingCartItemWeight(sc);
@@ -1400,12 +1400,26 @@ namespace Grand.Services.Orders
                                     foreach (var group in grouped)
                                     {
                                         bool groupCanBeBooked = true;
-                                        for (DateTime iterator = sc.RentalStartDateUtc.Value; iterator < sc.RentalEndDateUtc.Value; iterator += new TimeSpan(24, 0, 0))
+                                        if (product.IncludeBothDates && product.IntervalUnitType == IntervalUnit.Day)
                                         {
-                                            if (!group.Select(x => x.Date).Contains(iterator))
+                                            for (DateTime iterator = sc.RentalStartDateUtc.Value; iterator <= sc.RentalEndDateUtc.Value; iterator += new TimeSpan(24, 0, 0))
                                             {
-                                                groupCanBeBooked = false;
-                                                break;
+                                                if (!group.Select(x => x.Date).Contains(iterator))
+                                                {
+                                                    groupCanBeBooked = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            for (DateTime iterator = sc.RentalStartDateUtc.Value; iterator < sc.RentalEndDateUtc.Value; iterator += new TimeSpan(24, 0, 0))
+                                            {
+                                                if (!group.Select(x => x.Date).Contains(iterator))
+                                                {
+                                                    groupCanBeBooked = false;
+                                                    break;
+                                                }
                                             }
                                         }
 
@@ -1422,7 +1436,16 @@ namespace Grand.Services.Orders
                                     }
                                     else
                                     {
-                                        var temp = groupToBook.Where(x => x.Date >= sc.RentalStartDateUtc && x.Date < sc.RentalEndDateUtc);
+                                        var temp = groupToBook.AsQueryable();
+                                        if (product.IncludeBothDates && product.IntervalUnitType == IntervalUnit.Day)
+                                        {
+                                            temp = temp.Where(x => x.Date >= sc.RentalStartDateUtc && x.Date <= sc.RentalEndDateUtc);
+                                        }
+                                        else
+                                        {
+                                            temp = temp.Where(x => x.Date >= sc.RentalStartDateUtc && x.Date < sc.RentalEndDateUtc);
+                                        }
+
                                         foreach (var item in temp)
                                         {
                                             item.OrderId = order.OrderGuid.ToString();

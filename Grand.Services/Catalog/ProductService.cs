@@ -1229,7 +1229,8 @@ namespace Grand.Services.Catalog
         /// </summary>
         /// <param name="Interval">Interval</param>
         /// <param name="IntervalUnit">Interval unit</param>
-        public virtual void UpdateIntervalProperties(string productId, int interval, IntervalUnit intervalUnit)
+        /// <param name="includeBothDates">Include both dates</param>
+        public virtual void UpdateIntervalProperties(string productId, int interval, IntervalUnit intervalUnit, bool includeBothDates)
         {
             var product = GetProductById(productId);
             if (product == null)
@@ -1237,6 +1238,7 @@ namespace Grand.Services.Catalog
 
             product.Interval = interval;
             product.IntervalUnitId = (int)intervalUnit;
+            product.IncludeBothDates = includeBothDates;
 
             _productRepository.Update(product);
             _eventPublisher.EntityUpdated(product);

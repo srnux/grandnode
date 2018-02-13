@@ -251,6 +251,10 @@ namespace Grand.Core.Domain.Catalog
 
         }
         /// <summary>
+        /// Gets or sets IncludeBothDates
+        /// </summary>
+        public bool IncludeBothDates { get; set; }
+        /// <summary>
         /// Gets or sets a value indicating whether the entity is ship enabled
         /// </summary>
         public bool IsShipEnabled { get; set; }

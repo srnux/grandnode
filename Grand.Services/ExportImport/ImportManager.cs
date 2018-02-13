@@ -299,6 +299,9 @@ namespace Grand.Services.ExportImport
                             case "Interval":
                                 product.Interval = property.IntValue;
                                 break;
+                            case "IncludeBothDates":
+                                product.IncludeBothDates = property.BooleanValue;
+                                break;
                             case "IntervalUnitId":
                                 product.IntervalUnitId = property.IntValue;
                                 break;

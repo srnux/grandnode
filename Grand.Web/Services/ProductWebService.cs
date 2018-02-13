@@ -1276,6 +1276,7 @@ namespace Grand.Web.Services
 
                 model.IntervalUnit = product.IntervalUnitType;
                 model.Interval = product.Interval;
+                model.IncludeBothDates = product.IncludeBothDates;
 
                 var list = reservations.GroupBy(x => x.Parameter).ToList().Select(x => x.Key);
                 foreach (var item in list)

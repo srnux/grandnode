@@ -118,7 +118,8 @@ namespace Grand.Services.Catalog
                         var validDiscount = _discountService.ValidateDiscount(discount, customer);
                         if (validDiscount.IsValid &&
                             discount.DiscountType == DiscountType.AssignedToSkus)
-                            allowedDiscounts.Add(new AppliedDiscount() {
+                            allowedDiscounts.Add(new AppliedDiscount()
+                            {
                                 CouponCode = validDiscount.CouponCode,
                                 DiscountId = discount.Id,
                                 IsCumulative = discount.IsCumulative
@@ -140,7 +141,8 @@ namespace Grand.Services.Catalog
             {
                 var validDiscount = _discountService.ValidateDiscount(discount, customer);
                 if (validDiscount.IsValid)
-                    allowedDiscounts.Add(new AppliedDiscount() {
+                    allowedDiscounts.Add(new AppliedDiscount()
+                    {
                         CouponCode = validDiscount.CouponCode,
                         DiscountId = discount.Id,
                         IsCumulative = discount.IsCumulative
@@ -174,7 +176,8 @@ namespace Grand.Services.Catalog
                         {
                             var validDiscount = _discountService.ValidateDiscount(discount, customer);
                             if (validDiscount.IsValid && discount.DiscountType == DiscountType.AssignedToCategories)
-                                allowedDiscounts.Add(new AppliedDiscount() {
+                                allowedDiscounts.Add(new AppliedDiscount()
+                                {
                                     CouponCode = validDiscount.CouponCode,
                                     DiscountId = discount.Id,
                                     IsCumulative = discount.IsCumulative
@@ -299,7 +302,8 @@ namespace Grand.Services.Catalog
                                     var validDiscount = _discountService.ValidateDiscount(discount, customer);
                                     if (validDiscount.IsValid &&
                                              discount.DiscountType == DiscountType.AssignedToStores)
-                                        allowedDiscounts.Add(new AppliedDiscount() {
+                                        allowedDiscounts.Add(new AppliedDiscount()
+                                        {
                                             CouponCode = validDiscount.CouponCode,
                                             DiscountId = discount.Id,
                                             IsCumulative = discount.IsCumulative
@@ -327,7 +331,7 @@ namespace Grand.Services.Catalog
 
             //discounts applied to products
             foreach (var discount in GetAllowedDiscountsAppliedToProduct(product, customer))
-                if(!allowedDiscounts.Where(x=>x.DiscountId == discount.DiscountId).Any())
+                if (!allowedDiscounts.Where(x => x.DiscountId == discount.DiscountId).Any())
                     allowedDiscounts.Add(discount);
 
             //discounts applied to all products
@@ -486,7 +490,8 @@ namespace Grand.Services.Catalog
             if (product.ProductType == ProductType.Reservation)
                 cacheTime = 0;
 
-            ProductPriceForCaching PrepareModel() {
+            ProductPriceForCaching PrepareModel()
+            {
                 var result = new ProductPriceForCaching();
 
                 //initial price
@@ -510,7 +515,14 @@ namespace Grand.Services.Catalog
                     if (rentalStartDate.HasValue && rentalEndDate.HasValue)
                     {
                         decimal d = 0;
-                        decimal.TryParse((rentalEndDate - rentalStartDate).Value.TotalDays.ToString(), out d);
+                        if (product.IncludeBothDates)
+                        {
+                            decimal.TryParse(((rentalEndDate - rentalStartDate).Value.TotalDays + 1).ToString(), out d);
+                        }
+                        else
+                        {
+                            decimal.TryParse((rentalEndDate - rentalStartDate).Value.TotalDays.ToString(), out d);
+                        }
                         price = price * d;
                     }
 
@@ -665,7 +677,7 @@ namespace Grand.Services.Catalog
                     }
                 }
             }
-            if(!finalPrice.HasValue)
+            if (!finalPrice.HasValue)
             {
                 //summarize price of all attributes
                 decimal attributesTotalPrice = decimal.Zero;
